@@ -1,10 +1,11 @@
 # iitg-library
 Web Portal for Lakshminath Bezbaroa Central Library
 
- ******Users**
+ **Users**
 
-| Library Staff | The Librarian and staff enrolled under the Lakshminath Bezbaroa Central Library |
+| User          | Details                                                                         |
 | ------------- | ------------------------------------------------------------------------------- |
+| Library Staff | The Librarian and staff enrolled under the Lakshminath Bezbaroa Central Library |
 | Students      | Students enrolled in IIT Guwahati                                               |
 
 
@@ -302,22 +303,3 @@ Results of the bulk-upload are shown with details of each entry per line.
 
 
 ----------
-
-
-## DEPLOYMENT
-
-The application was developed and tested on the following server config:
-
-- PHP >= 5.6 (preferably PHP7)
-- MySQL >= 5 (Or any other database server compatible with CodeIgniter)
-- Apache2
-
-The application is developed using CodeIgnitor 3. Following are the required manual configurations:
-
-1. Editing the application/config/config.php file :
-  → Line 26 : Specify the base address from where the web-app will be served.
-2. Editing the application/config/database.php file :
-  → Line 76 onwards : Specify the database driver to be used, server address, database name, username and password.
-3. Editing the .htaccess file in the root folder of the application :
-  → Line 9 : Specify the relative address of the directory holding the application. This is used for removing the “index.php” from the url while accessing the application.
-
