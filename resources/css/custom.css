@@ -1,0 +1,47 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{margin:0px; padding:0px;  font-family: Verdana;}
+
+p {
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+}
+
+.left {
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 5px;
+    box-shadow: 0 5px 4px #999999;
+    float: left;
+    margin: 10px;
+    padding: 0 0 0 15px;
+    width: 700px;
+}
+
+ p {
+    margin: 0;
+    padding: 0;
+}
+ select {
+    box-shadow: 0 1px 2px #999999;
+    padding: 8px 0 8px 4px;
+}
+
+ input {
+    box-shadow: 0 1px 2px #999999;
+    padding: 9px 0;
+}
+
+
+.new-change {
+    background: none repeat scroll 0 0 #003366;
+    border: 1px solid #003366;
+    box-shadow: 0 1px 2px #999999;
+    color: #fff;
+    cursor: pointer;
+    padding: 8px 2px;
+}
+
+
+

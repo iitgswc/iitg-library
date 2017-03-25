@@ -1,0 +1,106 @@
+
+.stMain {
+  display:block;
+  margin:0;
+  padding:0;
+  color: #666666;
+  border: 0px solid #CCC;
+  font-family: "Segoe UI",Tahoma,arial,sans-serif;
+  font-size: 100%;
+  width:700px;
+}
+.stContainer {
+    border-radius: 5px;
+    display: block;
+    margin: 0;
+    min-height: 244px !important;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+}
+.stMain div.tabContent { 
+  display:block;
+  position: absolute;
+  margin:0;  
+  padding:10px;     
+  border: 0px solid #D4D4D4;    
+  background-color: #FFF;
+  text-align:left;
+}
+
+.stMain ul.tabAnchor {
+    clear: both;
+    display: inline-block;
+    float: left;
+    list-style-type: none;
+    margin: 11px -1px 0 0;
+    padding: 0;
+    position: relative;
+    z-index: 100;
+}
+.stMain ul.tabAnchor li{ 
+  position: relative; 
+  margin: 0;
+  padding: 0;
+}
+.stMain ul.tabAnchor li a {
+    background: none repeat scroll 0 0 #e5e5e5;
+    color: #272020;
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    height: 20px;
+    margin: 0 0 2px;
+    outline-style: none;
+    padding: 5px 0 5px 10px;
+    text-decoration: none;
+    width: 160px;
+}
+.stMain ul.tabAnchor li a small {
+  font-size:15px;
+}
+.stMain ul.tabAnchor li a:hover {
+  color:#666;
+  
+}
+
+.stMain ul.tabAnchor li a.sel {
+    background: none repeat scroll 0 0 #003366;
+    color: #fff;
+    cursor: text;
+}
+.loader{
+  position: absolute;
+  left:48%;
+  top:40%;
+  display:block;
+  margin:0;
+  padding:5px; 
+  padding-top: 35px;
+  font-size: 10px;
+  color:#666;
+  text-decoration: none;
+  outline-style:none;
+  border: 1px solid #D4D4D4;
+  background: #f6f6f6 url(../images/loader.gif) no-repeat 10px 10px ;
+}
+a.stLinks { 
+  margin:0;
+  padding:5px;
+  color:#666;
+  text-decoration: none;
+  outline-style:none;
+  border: 1px solid #D4D4D4;
+  background-color: #f6f6f6;
+ }
+a.stLinks:hover {
+  color:#FFF;
+  background-color: #00A7DB;
+}
+
+.powereed {
+    float: left;
+    font-size: 2px !important;
+    font-weight: normal !important;
+    margin: 8px 0 0;
+}
