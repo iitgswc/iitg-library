@@ -192,6 +192,15 @@ class Google_Service_Resource
         $parameters
     );
 
+    // $tmp = explode("=", $url);
+    // if(end($tmp) == "media"){
+    //   var_dump($url);
+    //   // $url = "https://docs.google.com/feeds/download/spreadsheets/Export?key=1oDD6EthPSijmYmtM4LEH8ghZ8xT3P1hf69NFbX9GhU0&exportFormat=pdf&gid=140984475&portrait=false&gridlines=false";
+    //   $url .= "&portrait=false&gridlines=false";
+    // }
+    // var_dump($url);
+
+
     // NOTE: because we're creating the request by hand,
     // and because the service has a rootUrl property
     // the "base_uri" of the Http Client is not accounted for

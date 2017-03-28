@@ -1,4 +1,8 @@
-
+<?php if($flash_message) { ?>
+    <div class="alert alert-success">
+        <?=$flash_message?>
+    </div>
+<?php } ?>
 <div class="col-lg-10">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -11,6 +15,7 @@
                     <th><?php echo lang('index_fname_th');?></th>
                     <th><?php echo lang('index_lname_th');?></th>
                     <th><?php echo lang('index_email_th');?></th>
+                    <th><?php echo lang('index_groups_th');?></th>
                     <th><?php echo lang('index_action_th');?></th>
                 </tr>
                 <?php foreach ($users as $user):?>
@@ -18,37 +23,34 @@
                         <td><?php echo htmlspecialchars($user->first_name,ENT_QUOTES,'UTF-8');?></td>
                         <td><?php echo htmlspecialchars($user->last_name,ENT_QUOTES,'UTF-8');?></td>
                         <td><?php echo htmlspecialchars($user->email,ENT_QUOTES,'UTF-8');?></td>
-                        <td><?php echo anchor("admin/edit_user/".$user->id, 'Edit') ;?></td>
+                        <td><?php echo htmlspecialchars($user->groups[0]->name,ENT_QUOTES,'UTF-8');?></td>
+                        <td>
+                            <?php if($is_admin || $user->id == $current_user->id) { ?>
+                                <?php echo anchor("admin/edit_user/".$user->id, 'Edit') ;?>
+                            <?php } ?>
+                            <?php if($is_admin && $user->id != $current_user->id) { ?>
+                                <a href="<?=site_url("admin/delete_user/".$user->id)?>" onclick="return confirm_delete(this);" style="margin-left:10px;">Delete</a>
+                            <?php } ?>
+                        </td>
                     </tr>
                 <?php endforeach;?>
             </table>
         </div>
         <!-- /.panel-body -->
     </div>
+    <?php if($is_admin) { ?>
+        <a class="btn btn-large btn-primary" href="<?=base_url('admin/create_user')?>">Add New User</a>
+    <?php } ?>
     <!-- /.panel -->
 </div>
 <!-- /.col-lg-8 -->
 
 <div class="col-lg-2">
-<!--     <div class="panel panel-default">
-        <div class="panel-heading">
-            <i class="fa fa-bell fa-fw"></i> Users
-        </div>
-        <div class="panel-body">
-            <div class="list-group">
-                <a href="#" class="list-group-item">
-                    <i class="fa fa-comment fa-fw"></i> New Comment
-                    <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                    </span>
-                </a>
-                <a href="#" class="list-group-item">
-                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                    <span class="pull-right text-muted small"><em>12 minutes ago</em>
-                    </span>
-                </a>
-            </div>
-            <a href="#" class="btn btn-default btn-block">View All Alerts</a>
-        </div>
-    </div> -->
 </div>
-<!-- /.col-lg-4 -->
+<!-- /.col-lg-2 -->
+
+<script type="text/javascript">
+    function confirm_delete(node) {
+        return confirm("Are you sure?");
+    }
+</script>

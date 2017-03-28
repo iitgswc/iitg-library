@@ -32,6 +32,9 @@ class Admin extends CI_Controller {
 		// $this->load->library(array('ion_auth','form_validation'));
 		// $this->load->helper(array('url','language'));
 
+		$this->data['current_user'] = $this->ion_auth->user()->row();
+		$this->data['is_admin'] = $this->ion_auth->is_admin();
+
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 		$this->lang->load('auth');
 		$this->google_api_credentials = FCPATH.'.api-keys/client_secret_767286571202-ogsenpbt99tojggribdvqf0g7afh0omn.apps.googleusercontent.com.json';
@@ -40,17 +43,13 @@ class Admin extends CI_Controller {
 
 	public function index(){
 		$this->data['page_title'] = "Dashboard";
+		$this->data['flash_message'] = $this->session->flashdata('message');
 		$this->data['css_files'] = NULL;
 		$this->data['js_files'] = NULL;
 		if (!$this->ion_auth->logged_in())
 		{
 			// redirect them to the login page
 			redirect('admin/login', 'refresh');
-		}
-		elseif (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
-		{
-			// redirect them to the home page because they must be an administrator to view this
-			return show_error('You must be an administrator to view this page.');
 		}
 		else
 		{
@@ -454,7 +453,7 @@ class Admin extends CI_Controller {
 					}
 					else
 					{
-						redirect('/', 'refresh');
+						redirect('admin', 'refresh');
 					}
 
 			    }
@@ -468,7 +467,7 @@ class Admin extends CI_Controller {
 					}
 					else
 					{
-						redirect('/', 'refresh');
+						redirect('admin', 'refresh');
 					}
 
 			    }
@@ -521,6 +520,107 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/edit_user', $this->data);
 		$this->load->view('admin/admin_footer', $this->data);
 	}
+
+	// create a new user
+	public function create_user(){
+
+		if (!$this->ion_auth->logged_in()){
+				redirect('admin/login' , 'refresh');
+		}
+
+        $this->data['page_title'] = $this->lang->line('create_user_heading');
+
+        if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+        {
+            redirect('admin/', 'refresh');
+        }
+
+        $tables = $this->config->item('tables','ion_auth');
+        $identity_column = $this->config->item('identity','ion_auth');
+        $this->data['identity_column'] = $identity_column;
+
+        // validate form input
+        $this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
+        $this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required');
+        if($identity_column!=='email')
+        {
+            $this->form_validation->set_rules('identity',$this->lang->line('create_user_validation_identity_label'),'required|is_unique['.$tables['users'].'.'.$identity_column.']');
+            $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email');
+        }
+        else
+        {
+            $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique[' . $tables['users'] . '.email]');
+        }
+        $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+        $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+
+        if ($this->form_validation->run() == true)
+        {
+            $email    = strtolower($this->input->post('email'));
+            $identity = ($identity_column==='email') ? $email : $this->input->post('identity');
+            $password = $this->input->post('password');
+
+            $additional_data = array(
+                'first_name' => $this->input->post('first_name'),
+                'last_name'  => $this->input->post('last_name'),
+            );
+        }
+        if ($this->form_validation->run() == true && $this->ion_auth->register($identity, $password, $email, $additional_data))
+        {
+            // check to see if we are creating the user
+            // redirect them back to the admin page
+            $this->session->set_flashdata('message', $this->ion_auth->messages());
+            redirect("admin", 'refresh');
+        }
+        else
+        {
+            // display the create user form
+            // set the flash data error message if there is one
+            $this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
+
+            $this->data['first_name'] = array(
+                'name'  => 'first_name',
+                'id'    => 'first_name',
+                'type'  => 'text',
+                'value' => $this->form_validation->set_value('first_name'),
+            );
+            $this->data['last_name'] = array(
+                'name'  => 'last_name',
+                'id'    => 'last_name',
+                'type'  => 'text',
+                'value' => $this->form_validation->set_value('last_name'),
+            );
+            $this->data['email'] = array(
+                'name'  => 'email',
+                'id'    => 'email',
+                'type'  => 'text',
+                'value' => $this->form_validation->set_value('email'),
+            );
+            $this->data['password'] = array(
+                'name'  => 'password',
+                'id'    => 'password',
+                'type'  => 'password',
+                'value' => $this->form_validation->set_value('password'),
+            );
+            $this->data['password_confirm'] = array(
+                'name'  => 'password_confirm',
+                'id'    => 'password_confirm',
+                'type'  => 'password',
+                'value' => $this->form_validation->set_value('password_confirm'),
+            );
+
+            // $this->_render_page('auth/create_user', $this->data);
+            $this->load->view('admin/admin_header', $this->data);
+			$this->load->view('admin/create_user', $this->data);
+			$this->load->view('admin/admin_footer', $this->data);
+        }
+    }
+
+    public function delete_user($id){
+    	$this->ion_auth->delete_user($id);
+    	$this->session->set_flashdata('message', "Account successfully deleted!");
+		redirect("admin", 'refresh');
+    }
 
 
 
@@ -714,7 +814,7 @@ class Admin extends CI_Controller {
 		$params = array('valueInputOption' => 'USER_ENTERED'); //https://developers.google.com/sheets/api/reference/rest/v4/ValueInputOption
 		$result = $service_sheets->spreadsheets_values->update($spreadsheetId, $range, $body, $params);
 
-		redirect('admin/updateExpenditureSheet/updated');
+		// redirect('admin/updateExpenditureSheet/updated');
 	}
 
 
