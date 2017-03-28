@@ -126,6 +126,9 @@
                         <li>
                             <a href="<?=base_url('admin/manage_journals')?>"><i class="fa fa-dashboard fa-fw"></i> Manage Journals</a>
                         </li>
+                        <li>
+                            <a href="<?=base_url('admin/updateExpenditureSheet')?>"><i class="fa fa-dashboard fa-fw"></i> Update Expenditure Status</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->

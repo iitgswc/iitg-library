@@ -178,7 +178,7 @@
                     <div class="dd-inner">
                         <div class="column">
                             <h2>Miscellaneous</h2>
-                            <a href="bvstatus.pdf" target="_blank"><span>B & BV-Booking & Expenditure</span></a>
+                            <a href="<?=base_url('assets/sheets/bvstatus.pdf')?>" target="_blank"><span>B & BV-Booking & Expenditure</span></a>
                             <a href="forms_new"><span>Forms</span></a>
                             <a href="opac_new"><span>LibSys Client</span></a>
                             <a href="3rdflseries.pdf" target="_blank"><span>Series Available at Ground Floor</span></a>
