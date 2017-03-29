@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `library_files` (
   PRIMARY KEY (`file_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
--- Dumping data for table library.library_files: ~17 rows (approximately)
+-- Dumping data for table library.library_files: ~14 rows (approximately)
 /*!40000 ALTER TABLE `library_files` DISABLE KEYS */;
 INSERT INTO `library_files` (`file_id`, `file_name`, `file_description`) VALUES
 	(1, 'c711e-ndl.pdf', 'ndl notice'),
@@ -138,19 +138,18 @@ INSERT INTO `library_form_groups` (`form_group_id`, `form_group_name`, `form_gro
 DROP TABLE IF EXISTS `library_journal`;
 CREATE TABLE IF NOT EXISTS `library_journal` (
   `journal_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `journal_title` varchar(2000) NOT NULL,
-  `journal_url` varchar(5000) DEFAULT NULL,
-  `dept_code` varchar(50) NOT NULL,
-  `publisher` varchar(100) NOT NULL,
-  `publisher_url` varchar(5000) DEFAULT NULL,
-  `format` varchar(200) DEFAULT NULL,
-  `issn_no` varchar(200) DEFAULT NULL,
-  `availability` mediumtext,
+  `journal_title` varchar(2000) CHARACTER SET latin1 NOT NULL,
+  `journal_url` varchar(5000) CHARACTER SET latin1 DEFAULT NULL,
+  `dept_code` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `publisher` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `publisher_url` varchar(5000) CHARACTER SET latin1 DEFAULT NULL,
+  `format` varchar(200) CHARACTER SET latin1 DEFAULT NULL,
+  `issn_no` varchar(200) CHARACTER SET latin1 DEFAULT NULL,
+  `availability` mediumtext CHARACTER SET latin1,
   PRIMARY KEY (`journal_id`),
-  UNIQUE KEY `journal_title_publisher_issn_no` (`journal_title`,`publisher`,`issn_no`),
   KEY `FK_library_journal_departments` (`dept_code`),
   CONSTRAINT `FK_library_journal_departments` FOREIGN KEY (`dept_code`) REFERENCES `departments` (`dept_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=3632 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3632 DEFAULT CHARSET=utf16;
 
 -- Dumping data for table library.library_journal: ~1,754 rows (approximately)
 /*!40000 ALTER TABLE `library_journal` DISABLE KEYS */;
