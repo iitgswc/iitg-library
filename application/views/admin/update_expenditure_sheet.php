@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
                 <label for="">Update Cell Location</label>
-                <textarea type="text" class="form-control" name="cookie"><?=$cookie?></textarea>
+                <textarea type="text" class="form-control" name="cookie" rows="8"><?=$cookie?></textarea>
             </div>
             <div class="form-group">
                 <input class="btn btn-large btn-primary" type="submit" name="opt_1" value="Update Expenditure Sheet via API">
