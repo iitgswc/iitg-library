@@ -17,7 +17,7 @@
 <!-- START EBSCO LOCAL BOX JS ETC -->
 <link rel="stylesheet" type="text/css" href="<?= base_url('resources/css/custom.css')?>" media="all" />
 <link type="text/css" href="<?= base_url('resources/css/smart_tab_vertical.css')?>" rel="stylesheet" />
-<link type="text/css" href="<?= base_url('resources/css/font-awesome.min.css')?>" rel="stylesheet" />
+<link type="text/css" href="<?= base_url('resources/css/font-awesome/css/font-awesome.min.css')?>" rel="stylesheet" />
 <script type="text/javascript" src="<?= base_url('resources/js/FormProcessing.js')?>"></script>
 <script type="text/javascript" src="<?= base_url('resources/js/jquery-1.8.0.min.js')?>"></script>
 <script type="text/javascript" src="<?= base_url('resources/js/jquery.smartTab.js')?>"></script>
@@ -197,11 +197,14 @@ document.write("<small><font size='1' color='#000000' face='Arial'><b>"+dayarray
   <p align="left">
       <a href="<?=$item['latest_url']?>" target="_blank" style="text-decoration:none;">
         <?php if($item['latest_is_new'] == 'Yes'){ ?>
-          <img src="<?= base_url('resources/img/new.png')?>" style="float:left;">
+          <img src="<?= base_url('resources/img/new.png')?>" style="float:left;width:20px;">
+          <font size=2 color="#000000" face="arial"><?=$item['latest_text']?></font>
+        <?php } else{ ?>
+          <font size=2 color="#000000" face="arial" style="margin-left:0px;"><?=$item['latest_text']?></font>
         <?php } ?>
-        <font size=2 color="#000000" face="arial"><?=$item['latest_text']?></font>
       </a>
   </p>
+  <!-- <br> -->
 <?php } ?>	
 
 </marquee>
