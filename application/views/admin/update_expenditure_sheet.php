@@ -30,3 +30,12 @@
         </form>
     </div>
 </div>
+
+<?php
+
+//make sure apache can see the environment variable
+//if not put it inside /etc/apache2/envvars
+//ref : http://stackoverflow.com/a/23635043/2175224
+//var_dump(getenv('http_proxy'));
+
+?>

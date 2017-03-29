@@ -32,9 +32,6 @@ class Admin extends CI_Controller {
 		// $this->load->library(array('ion_auth','form_validation'));
 		// $this->load->helper(array('url','language'));
 
-		$this->data['current_user'] = $this->ion_auth->user()->row();
-		$this->data['is_admin'] = $this->ion_auth->is_admin();
-
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 		$this->lang->load('auth');
 		$this->google_api_credentials = FCPATH.'.api-keys/client_secret_767286571202-ogsenpbt99tojggribdvqf0g7afh0omn.apps.googleusercontent.com.json';
@@ -43,6 +40,8 @@ class Admin extends CI_Controller {
 
 	public function index(){
 		$this->data['page_title'] = "Dashboard";
+		$this->data['current_user'] = $this->ion_auth->user()->row();
+		$this->data['is_admin'] = $this->ion_auth->is_admin();
 		$this->data['flash_message'] = $this->session->flashdata('message');
 		$this->data['css_files'] = NULL;
 		$this->data['js_files'] = NULL;
@@ -147,6 +146,9 @@ class Admin extends CI_Controller {
 		$output = (array)$crud->render();
 		$output['page_title'] = "Manage Staff Groups";
 
+		$output['current_user'] = $this->ion_auth->user()->row();
+		$output['is_admin'] = $this->ion_auth->is_admin();
+
 		$this->load->view('admin/admin_header', $output);
 		$this->load->view('admin/crud_manage' , $output);
 		$this->load->view('admin/admin_footer', $output);
@@ -166,6 +168,9 @@ class Admin extends CI_Controller {
 		$output = (array)$crud->render();
 		$output['page_title'] = "Manage Staff";
 
+		$output['current_user'] = $this->ion_auth->user()->row();
+		$output['is_admin'] = $this->ion_auth->is_admin();
+
 		$this->load->view('admin/admin_header', $output);
 		$this->load->view('admin/crud_manage' , $output);
 		$this->load->view('admin/admin_footer', $output);
@@ -179,6 +184,9 @@ class Admin extends CI_Controller {
 		$crud->set_table('library_lac_groups');		
 		$output = (array)$crud->render();
 		$output['page_title'] = "Manage LAC Groups";
+
+		$output['current_user'] = $this->ion_auth->user()->row();
+		$output['is_admin'] = $this->ion_auth->is_admin();
 
 		$this->load->view('admin/admin_header', $output);
 		$this->load->view('admin/crud_manage' , $output);
@@ -198,6 +206,9 @@ class Admin extends CI_Controller {
 		$output = (array)$crud->render();
 		$output['page_title'] = "Manage LAC";
 
+		$output['current_user'] = $this->ion_auth->user()->row();
+		$output['is_admin'] = $this->ion_auth->is_admin();
+
 		$this->load->view('admin/admin_header', $output);
 		$this->load->view('admin/crud_manage' , $output);
 		$this->load->view('admin/admin_footer', $output);
@@ -213,6 +224,9 @@ class Admin extends CI_Controller {
 		$crud->set_field_upload('file_name','resources/uploads/');
 		$output = (array)$crud->render();
 		$output['page_title'] = "Manage Files";
+
+		$output['current_user'] = $this->ion_auth->user()->row();
+		$output['is_admin'] = $this->ion_auth->is_admin();
 
 		$this->load->view('admin/admin_header', $output);
 		$this->load->view('admin/crud_manage' , $output);
@@ -230,6 +244,9 @@ class Admin extends CI_Controller {
 		$output = (array)$crud->render();
 		$output['page_title'] = "Manage Latest";
 
+		$output['current_user'] = $this->ion_auth->user()->row();
+		$output['is_admin'] = $this->ion_auth->is_admin();
+
 		$this->load->view('admin/admin_header', $output);
 		$this->load->view('admin/crud_manage' , $output);
 		$this->load->view('admin/admin_footer', $output);
@@ -246,6 +263,9 @@ class Admin extends CI_Controller {
 		$output = (array)$crud->render();
 		$output['page_title'] = "Manage News";
 
+		$output['current_user'] = $this->ion_auth->user()->row();
+		$output['is_admin'] = $this->ion_auth->is_admin();
+
 		$this->load->view('admin/admin_header', $output);
 		$this->load->view('admin/crud_manage' , $output);
 		$this->load->view('admin/admin_footer', $output);
@@ -259,6 +279,9 @@ class Admin extends CI_Controller {
 		$crud->set_table('library_form_groups');		
 		$output = (array)$crud->render();
 		$output['page_title'] = "Manage Form Groups";
+
+		$output['current_user'] = $this->ion_auth->user()->row();
+		$output['is_admin'] = $this->ion_auth->is_admin();
 
 		$this->load->view('admin/admin_header', $output);
 		$this->load->view('admin/crud_manage' , $output);
@@ -278,6 +301,9 @@ class Admin extends CI_Controller {
 		$output = (array)$crud->render();
 		$output['page_title'] = "Manage Forms";
 
+		$output['current_user'] = $this->ion_auth->user()->row();
+		$output['is_admin'] = $this->ion_auth->is_admin();
+
 		$this->load->view('admin/admin_header', $output);
 		$this->load->view('admin/crud_manage' , $output);
 		$this->load->view('admin/admin_footer', $output);
@@ -295,6 +321,9 @@ class Admin extends CI_Controller {
 		$output['page_title'] = "Manage Journals";
 		$output['bulk_upload'] = true;
 		$output['error'] = "";
+
+		$output['current_user'] = $this->ion_auth->user()->row();
+		$output['is_admin'] = $this->ion_auth->is_admin();
 
 		$this->load->view('admin/admin_header', $output);
 		$this->load->view('admin/crud_manage' , $output);
@@ -694,6 +723,9 @@ class Admin extends CI_Controller {
 		$this->data['update_cell_location']  = $sheet_details['update_cell_location'];
 		$this->data['cookie']  = $sheet_details['cookie'];
 
+
+		$this->data['current_user'] = $this->ion_auth->user()->row();
+		$this->data['is_admin'] = $this->ion_auth->is_admin();
 		// $this->_render_page('auth/edit_user', $this->data);
 		$this->load->view('admin/admin_header', $this->data);
 		$this->load->view('admin/update_expenditure_sheet', $this->data);
