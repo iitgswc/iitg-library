@@ -574,6 +574,9 @@ class Admin extends CI_Controller {
 			'type' => 'password'
 		);
 
+		$this->data['current_user'] = $this->ion_auth->user()->row();
+		$this->data['is_admin'] = $this->ion_auth->is_admin();
+
 		// $this->_render_page('auth/edit_user', $this->data);
 		$this->load->view('admin/admin_header', $this->data);
 		$this->load->view('admin/edit_user', $this->data);
@@ -667,6 +670,9 @@ class Admin extends CI_Controller {
                 'type'  => 'password',
                 'value' => $this->form_validation->set_value('password_confirm'),
             );
+
+            $this->data['current_user'] = $this->ion_auth->user()->row();
+			$this->data['is_admin'] = $this->ion_auth->is_admin();
 
             // $this->_render_page('auth/create_user', $this->data);
             $this->load->view('admin/admin_header', $this->data);
