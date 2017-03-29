@@ -124,6 +124,9 @@
                             <a href="<?=base_url('admin/manage_files')?>"><i class="fa fa-dashboard fa-fw"></i> Manage Files</a>
                         </li>
                         <li>
+                            <a href="<?=base_url('admin/manage_departments')?>"><i class="fa fa-dashboard fa-fw"></i> Manage Departments</a>
+                        </li>
+                        <li>
                             <a href="<?=base_url('admin/manage_journals')?>"><i class="fa fa-dashboard fa-fw"></i> Manage Journals</a>
                         </li>
                         <li>

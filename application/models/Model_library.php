@@ -83,6 +83,7 @@ class Model_library extends CI_Model
 			$query_str .= '( ';
 			$query_str .= 'journal_title LIKE "'.$keyword.'" OR ';
 			$query_str .= 'publisher LIKE "'.$keyword.'" OR ';
+			$query_str .= 'dept_code LIKE "'.$keyword.'" OR ';
 			$query_str .= 'issn_no LIKE "'.$keyword.'"';
 			$query_str .= ') AND ';
 		}

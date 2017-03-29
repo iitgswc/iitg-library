@@ -271,6 +271,24 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/admin_footer', $output);
 	}
 
+	public function manage_departments(){
+		if (!$this->ion_auth->logged_in()){
+			redirect('admin/login' , 'refresh');
+		}
+		$crud = new grocery_CRUD();
+		$crud->set_table('departments');
+		$crud->set_subject('Department');
+		$output = (array)$crud->render();
+		$output['page_title'] = "Manage Departments";
+
+		$output['current_user'] = $this->ion_auth->user()->row();
+		$output['is_admin'] = $this->ion_auth->is_admin();
+
+		$this->load->view('admin/admin_header', $output);
+		$this->load->view('admin/crud_manage' , $output);
+		$this->load->view('admin/admin_footer', $output);
+	}
+
 	public function manage_form_groups(){
 		if (!$this->ion_auth->logged_in()){
 			redirect('admin/login' , 'refresh');
@@ -316,6 +334,8 @@ class Admin extends CI_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_table('library_journal');
 		$crud->set_subject('Journal');
+		$crud->field_type('issn_no' , 'text');
+		$crud->set_relation('dept_code', 'departments', '{dept_code}');
 		
 		$output = (array)$crud->render();
 		$output['page_title'] = "Manage Journals";
@@ -353,10 +373,10 @@ class Admin extends CI_Controller {
 			foreach(file($fileLocation) as $line) {
 				// echo $line. "<br>";
 				$line = explode(",",$line);
-				if(count($line) != 7){
+				if(count($line) != 8){
 					$tmp['lineNo'] = $lineNo;
 					$tmp['status'] = "unsuccessfull";
-					$tmp['details'] = "Line does not contain 7 comma separated values.";
+					$tmp['details'] = "Line does not contain 8 comma separated values.";
 					$lineNo++;
 					array_push($status, $tmp);
 					$total_failed++;
@@ -366,23 +386,30 @@ class Admin extends CI_Controller {
 				$journal = array(
 						'journal_title'		=>	$line[0],
 						'journal_url'		=>	$line[1],
-						'publisher'			=>	$line[2],
-						'publisher_url'		=>	$line[3],
-						'format'			=>	$line[4],
-						'issn_no'			=>	str_replace("|", "<br>", $line[5]),
-						'availability'		=>	str_replace("|", "<br>", $line[6])
+						'dept_code'			=>	$line[2],
+						'publisher'			=>	$line[3],
+						'publisher_url'		=>	$line[4],
+						'format'			=>	$line[5],
+						'issn_no'			=>	str_replace("|", "<br>", $line[6]),
+						'availability'		=>	str_replace("|", "<br>", $line[7])
 					);
 
 				$retval = $this->model_admin->add_journal($journal);
-				if($retval == true){
+
+				if($retval == "success"){
 					$tmp['lineNo'] = $lineNo;
 					$tmp['status'] = "inserted_successfully";
 					$tmp['details'] = "";
 					$total_success++;
+				}else if($retval == "1452"){
+					$tmp['lineNo'] = $lineNo;
+					$tmp['status'] = $retval;
+					$tmp['details'] = "Department code incorrect";
+					$total_failed++;
 				}else{
 					$tmp['lineNo'] = $lineNo;
-					$tmp['status'] = "unsuccessfull";
-					$tmp['details'] = $retval;
+					$tmp['status'] = $retval;
+					$tmp['details'] = "unsuccessfull";
 					$total_failed++;
 				}
 				array_push($status, $tmp);
@@ -392,6 +419,9 @@ class Admin extends CI_Controller {
 			$data['status'] = $status;
 			$data['total_success'] = $total_success;
 			$data['total_failed']  = $total_failed;
+			$data['current_user'] = $this->ion_auth->user()->row();
+			$data['is_admin'] = $this->ion_auth->is_admin();
+
 			$this->load->view('admin/admin_header', $data);
 			$this->load->view('admin/bulk_upload_status',$data);
 			$this->load->view('admin/admin_footer', $data);

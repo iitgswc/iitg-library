@@ -81,6 +81,7 @@
 							<th>Sno</th>
 							<th>Journal Title</th>
 							<th>Publisher</th>
+							<th>Dept</th>
 							<th>Format</th>
 							<th>ISSN</th>
 							<th>Availability</th>
@@ -96,6 +97,7 @@
 									<td><?=$i?></td>
 									<td><a href="<?=isset($journal['journal_url'])?$journal['journal_url']:'#'?>"><?=$journal['journal_title']?></a></td>
 									<td><a href="<?=isset($journal['publisher_url'])?$journal['publisher_url']:'#'?>"><?=$journal['publisher']?></a></td>
+									<td><?=$journal['dept_code']?></td>
 									<td><?=$journal['format']?></td>
 									<td><?=$journal['issn_no']?></td>
 									<td>
@@ -124,7 +126,7 @@
 		$( document ).ready(function() {
 			$( "#journal_search" ).autocomplete({
 				source: "<?=base_url('library/search_auto_complete')?>",
-				minLength: 5,
+				minLength: 3,
 				select: function( event, ui ) {
 					event.target.value = ui.item.label;
 					$('#journal_search_form').submit();
