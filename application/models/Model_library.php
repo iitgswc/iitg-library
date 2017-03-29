@@ -25,7 +25,7 @@ class Model_library extends CI_Model
 	}
 
 	public function fetch_lac_archive_list(){
-		$query = $this->db->query('select distinct(lac_archive_period) from library_lac where lac_archive_period <> "current" AND lac_archive_period <> "NULL";');
+		$query = $this->db->query('select distinct(lac_archive_period) from library_lac where lac_archive_period <> "current" AND lac_archive_period <> "NULL" order by library_lac.lac_archive_period;');
 		if($this->db->error()['code'] != 0){
 			return show_error('Database error!');
 		}
