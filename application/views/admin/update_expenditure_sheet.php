@@ -20,7 +20,7 @@
                 <input type="text" class="form-control" value="<?=$update_cell_location?>" name="update_cell_location">
             </div>
             <div class="form-group">
-                <label for="">Update Cell Location</label>
+                <label for="">Cookie</label>
                 <textarea type="text" class="form-control" name="cookie" rows="8"><?=$cookie?></textarea>
             </div>
             <div class="form-group">
