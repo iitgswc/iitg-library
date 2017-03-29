@@ -23,14 +23,21 @@ The application was developed and tested on the following server config:
 - MySQL >= 5 (Or any other database server compatible with CodeIgniter)
 - Apache2
 
+Installing dependencies via composer:
+<pre><code>composer install</pre></code>
+<b>Note :</b> vendor folder is placed in the applications directory. You can change the location by editing composer.json.
+
 The application is developed using CodeIgnitor 3. Following are the required manual configurations:
 
 1. Editing the application/config/config.php file :
-  → Line 26 : Specify the base address from where the web-app will be served.
+- Line 26 : Specify the base address from where the web-app will be served.
+- Line 140 : Set $config['composer_autoload'] to TRUE. If vendor folder's path has been changed then set the path here.
+
 2. Editing the application/config/database.php file :
-  → Line 76 onwards : Specify the database driver to be used, server address, database name, username and password.
+- Line 76 onwards : Specify the database driver to be used, server address, database name, username and password.
+
 3. Editing the .htaccess file in the root folder of the application :
-  → Line 9 : Specify the relative address of the directory holding the application. This is used for removing the “index.php” from the url while accessing the application.
+- Line 9 : Specify the relative address of the directory holding the application. This is used for removing the “index.php” from the url while accessing the application.
 
 
 ----------
