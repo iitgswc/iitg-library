@@ -7,3 +7,4 @@
 .api-keys/
 application/config/config.php
 application/config/database.php
+assets/sheets/sheet_details.json

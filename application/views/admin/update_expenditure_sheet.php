@@ -20,7 +20,12 @@
                 <input type="text" class="form-control" value="<?=$update_cell_location?>" name="update_cell_location">
             </div>
             <div class="form-group">
-                <input class="btn btn-large btn-primary" type="submit" value="Update Expenditure Sheet">
+                <label for="">Update Cell Location</label>
+                <textarea type="text" class="form-control" name="cookie"><?=$cookie?></textarea>
+            </div>
+            <div class="form-group">
+                <input class="btn btn-large btn-primary" type="submit" name="opt_1" value="Update Expenditure Sheet via API">
+                <input class="btn btn-large btn-primary" type="submit" name="opt_2" value="Update Expenditure Sheet via Cookies">
             </div>
         </form>
     </div>

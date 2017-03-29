@@ -675,11 +675,16 @@ class Admin extends CI_Controller {
 		}
 
 		if($this->input->post()){
+			// var_dump($this->input->post());
+			// die();
 			$sheet_details['sheet_remote_filename'] = $this->input->post('sheet_remote_filename');
 			$sheet_details['update_cell_location']  = $this->input->post('update_cell_location');
+			$sheet_details['cookie']  = $this->input->post('cookie');
 			file_put_contents($this->sheet_remote_details,json_encode($sheet_details));
 
-			redirect('admin/fetch_update_sheet');
+			if($this->input->post('opt_1') != "")
+				redirect('admin/fetch_update_sheet/opt_1');
+			else redirect('admin/fetch_update_sheet/opt_2');
 		}
 
 
@@ -687,6 +692,7 @@ class Admin extends CI_Controller {
 		$sheet_details = json_decode(file_get_contents($this->sheet_remote_details), true);
 		$this->data['sheet_remote_filename'] = $sheet_details['sheet_remote_filename'];
 		$this->data['update_cell_location']  = $sheet_details['update_cell_location'];
+		$this->data['cookie']  = $sheet_details['cookie'];
 
 		// $this->_render_page('auth/edit_user', $this->data);
 		$this->load->view('admin/admin_header', $this->data);
@@ -747,7 +753,7 @@ class Admin extends CI_Controller {
 
 
 	// fetches google sheet, breaks it into pages and returns first page.
-	public function fetch_update_sheet(){
+	public function fetch_update_sheet($opt = "opt_1"){
 
 		if (!$this->ion_auth->logged_in()){
 				redirect('admin/login' , 'refresh');
@@ -757,6 +763,7 @@ class Admin extends CI_Controller {
 		$sheet_details = json_decode(file_get_contents($this->sheet_remote_details), true);
 		$sheet_remote_filename = $sheet_details['sheet_remote_filename'];
 		$update_cell_location  = $sheet_details['update_cell_location'];
+		$cookie  = $sheet_details['cookie'];
 
 		$client = $this->getClient();
 		$service = new Google_Service_Drive($client);
@@ -796,11 +803,28 @@ class Admin extends CI_Controller {
 
 
 		// download pdf
-		$response = $service->files->export($fileId, 'application/pdf', array('alt' => 'media'));
-		$content = $response->getBody()->getContents();
+		if($opt == "opt_1"){
+			$response = $service->files->export($fileId, 'application/pdf', array('alt' => 'media'));
+			$content = $response->getBody()->getContents();
+		}else{
+			$url = "https://docs.google.com/feeds/download/spreadsheets/Export?key=".$fileId."&exportFormat=pdf&portrait=false&gridlines=false";
+			// $url = "https://docs.google.com/feeds/download/spreadsheets/Export?key=1oDD6EthPSijmYmtM4LEH8ghZ8xT3P1hf69NFbX9GhU0&exportFormat=pdf&gid=140984475&portrait=false&gridlines=false";
+			// echo anchor($url,$url);
+			// $cookie = "S=apps-spreadsheets=6PX_1z4mk3YzQUBm8zAi42A1smRla_rm;S=photos_html=9REUZTKEPqt1_g20gDbUhXXTQDKrk-Ul:billing-ui-v3=PTTGe6LEMflznL-Ei6AKgSvQXvOohLMi:billing-ui-v3-efe=PTTGe6LEMflznL-Ei6AKgSvQXvOohLMi:explorer=QLt7h15wxnEJdQO3nKdPqoiSkM1FXL4i;WRITELY_SID=PQQ9evMGHmJTPbSXI0oRDZTXVOm7KJUG_r754S66AVBgGaGfJktRMTFdytqfsw09YCSxzA.;APISID=tngz7vaqsdHHzMWJ/AcwWqBKg_HBCrwpxP;GMAIL_RTT=387;HSID=AcnHZypRZGvwpnFxp;NID=100=FnARaEXOGTMfMMyPrZ66dd4teqbdFqxIGetmQN34jj_lXTIVbB_StsWk1iSE7uUhVPl7pclOivrPl4d34vZ_Lk9Rr-CNDLoay12dQyfpI1I8RJX63HlKBX0RU-RVxFyWeNFxNGjAEClhCCTdiCzPd3OvyNHSev8q8uT3v-oayEQKxWL8CH9pYFVLoydu7ILsacT4YGFHtVowx3LqeErLfJ9N3a1cqFJSxHzpVHGZilKi3L_59CEEVkT-9ad1MMNIJflus-w5H0R2z1pcW6EyTC_OxCH0bYtu2Vb5exYBQWzUbKwkOMszmH3TpXCBFu3XxgeDXodDkR3JBqZ1hzNiodzyT7hztROPnGFz8P59ErNnLHq0Yhlc-vcX;S=photos_html=9REUZTKEPqt1_g20gDbUhXXTQDKrk-Ul:billing-ui-v3=PTTGe6LEMflznL-Ei6AKgSvQXvOohLMi:billing-ui-v3-efe=PTTGe6LEMflznL-Ei6AKgSvQXvOohLMi;SAPISID=J0DxRFEQtng-BY8e/AoIR1DcjB_XVknOOO;SID=VwQ9esBnGiNtRQuvRY02RGDW25JXD3gscA74SpTZPHKxoBG-cAt0ymdRVNp2UZSJYEpyWA.;SSID=A6aXHq4LqUd6k5g8_;";
+
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_URL, $url);
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt($curl, CURLOPT_COOKIE, $cookie);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+			$content = curl_exec($curl);
+			curl_close($curl);
+		}
 		$fp = fopen($this->pdf_location.'sheet.pdf', 'w');
 		fwrite($fp, $content);
 		fclose($fp);
+
+		// end download pdf
 
 		$this->split_pdf('sheet.pdf',$this->pdf_location,1);
 		unlink($this->pdf_location.'sheet.pdf');
@@ -814,7 +838,7 @@ class Admin extends CI_Controller {
 		$params = array('valueInputOption' => 'USER_ENTERED'); //https://developers.google.com/sheets/api/reference/rest/v4/ValueInputOption
 		$result = $service_sheets->spreadsheets_values->update($spreadsheetId, $range, $body, $params);
 
-		// redirect('admin/updateExpenditureSheet/updated');
+		redirect('admin/updateExpenditureSheet/updated');
 	}
 
 
@@ -832,9 +856,12 @@ class Admin extends CI_Controller {
 		// Split each page into a new PDF
 		for ($i = 1; $i <= $pagecount; $i++) {
 			$new_pdf = new FPDI();
-			$new_pdf->AddPage();
+			$new_pdf->AddPage('L');
 			$new_pdf->setSourceFile($this->pdf_location.$filename);
-			$new_pdf->useTemplate($new_pdf->importPage($i));
+			
+			$size = $new_pdf->getTemplateSize($new_pdf->importPage($i));
+			
+			$new_pdf->useTemplate($new_pdf->importPage($i), null, null, 2*$size['w'], 2*$size['h'], true);
 			
 			try {
 				$new_filename = $end_directory.str_replace('.pdf', '', $filename).'_'.$i.".pdf";
